@@ -1,3 +1,6 @@
 FROM openjdk:17
 
-EXPOSE 8080
+# setup app files
+WORKDIR /app
+# uncomment next line if you don't want to use volumes from `../docker-compose.yml`
+# COPY . .

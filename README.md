@@ -5,6 +5,12 @@
 
 ## Setup
 
+Copy [db.env.example](db.env.example) to `db.env`
+
+```bash
+cp .env.example .env
+```
+
 ### With Docker
 
 ```bash

@@ -2,12 +2,9 @@ version: '3'
 services:
   db:
     image: 'postgres:latest'
-    environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_USER=myuser'
-      - 'POSTGRES_PASSWORD=set-here-for-sake-of-simplicity'
     ports:
       - '5432:5432'
+    env_file: db.env
 
   backend:
     image: 'openjdk:17'
@@ -18,6 +15,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - '8080:8080'
+    volumes:
+      - ./backend:/app
+    env_file: db.env
 
   frontend:
     image: 'node:18'
