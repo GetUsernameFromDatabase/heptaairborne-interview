@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=mydatabase'
+      - 'POSTGRES_USER=myuser'
+      - 'POSTGRES_PASSWORD=set-here-for-sake-of-simplicity'
+    ports:
+      - '5432:5432'
+
+  backend:
+    image: 'openjdk:17'
+    depends_on:
+      - db
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+
+  frontend:
+    image: 'node:18'
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
