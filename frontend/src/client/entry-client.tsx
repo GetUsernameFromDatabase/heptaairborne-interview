@@ -6,7 +6,6 @@ import './index.css';
 
 const container = document.getElementById('app');
 
-// eslint-disable-next-line react-refresh/only-export-components
 const FullApp = () => (
   <React.StrictMode>
     <BrowserRouter>
@@ -15,7 +14,7 @@ const FullApp = () => (
   </React.StrictMode>
 );
 
-if (import.meta.hot ?? !container?.innerText) {
+if (import.meta.hot || !container?.innerText) {
   const root = createRoot(container!);
   root.render(<FullApp />);
 } else {

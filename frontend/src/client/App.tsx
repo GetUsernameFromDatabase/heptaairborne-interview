@@ -1,7 +1,8 @@
-import HomePage from './pages/HomePage';
+import React from 'react';
+import Main from './pages/MainPage';
 
 export const App = () => {
-  return <HomePage />;
+  return <Main />;
 };
 
 export default App;

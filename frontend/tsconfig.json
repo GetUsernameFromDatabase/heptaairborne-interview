@@ -1,25 +1,5 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "Node",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsxdev",
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-
     "allowJs": true,
     "alwaysStrict": true,
     "allowSyntheticDefaultImports": true,
@@ -30,13 +10,21 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
+    "jsx": "react-jsxdev",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "strict": true,
     "outDir": "dist",
-    "sourceMap": true
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "target": "ES2017"
   },
   "include": ["src/**/*", "types/*", "server.ts", "node_modules/vite/types/*"],
   "ts-node": {
     "transpileOnly": true,
-    "esm": true,
-    "files": true
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
   }
 }
