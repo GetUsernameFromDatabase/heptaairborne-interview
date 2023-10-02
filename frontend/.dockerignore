@@ -7,3 +7,5 @@ package-lock.json
 .git
 .DS_Store
 .env
+.yarn/cache
+.yarn/install-state.gz
