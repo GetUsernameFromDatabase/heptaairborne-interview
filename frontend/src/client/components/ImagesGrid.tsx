@@ -1,34 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-
-interface Image {
-  id: number;
-  imageUrl: string;
-  width: number;
-  height: number;
-  description: string;
-}
-
-interface ImageComponentProps {
-  image: Image;
-  className?: string;
-}
-
-// To prevent re-rendering
-const ImageComponent: React.FC<ImageComponentProps> = React.memo(
-  ({ image, className }) => (
-    <div key={image.id} className={className}>
-      <img
-        src={image.imageUrl}
-        alt={image.description}
-        width={image.width}
-        height={image.height}
-      />
-    </div>
-  )
-);
-
-ImageComponent.displayName = 'ImageComponent';
+import { ImageComponent } from './ImageComponent';
+import { Image } from 'types/image';
 
 const ImagesGrid: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);

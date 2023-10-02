@@ -919,6 +919,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/geojson@npm:*":
+  version: 7946.0.11
+  resolution: "@types/geojson@npm:7946.0.11"
+  checksum: 93fe7e9c5d16b0a836058ee4b87f8b022d53893d5a8e7ab52c8bf64d12039d076df99f3764c1c4da13abaa1001115fd899330edba4d8d8fa4a4feb162650b22c
+  languageName: node
+  linkType: hard
+
 "@types/history@npm:^4.7.11":
   version: 4.7.11
   resolution: "@types/history@npm:4.7.11"
@@ -965,6 +972,15 @@ __metadata:
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
   checksum: 527bddfe62db9012fccd7627794bd4c71beb77601861055d87e3ee464f2217c85fca7a4b56ae677478367bbd248dbde13553312b7d4dbc702a2f2bbf60c4018d
+  languageName: node
+  linkType: hard
+
+"@types/leaflet@npm:^1.9.6":
+  version: 1.9.6
+  resolution: "@types/leaflet@npm:1.9.6"
+  dependencies:
+    "@types/geojson": "*"
+  checksum: 64776f0ffb005950d4e07f1cccce861307c9c2b6be3151050b83f1c94eb837951856933fed91e8cdfa1ca9fdc72873af27c9a53a7ffe9981097f21373e3a1322
   languageName: node
   linkType: hard
 
@@ -6804,6 +6820,7 @@ __metadata:
     "@types/concurrently": 6.4.0
     "@types/eslint": 8.37.0
     "@types/express": ^4.17.17
+    "@types/leaflet": ^1.9.6
     "@types/node": 18.15.12
     "@types/react": ^18.0.37
     "@types/react-dom": ^18.0.11
