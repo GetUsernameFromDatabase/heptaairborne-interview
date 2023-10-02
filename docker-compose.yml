@@ -1,23 +1,16 @@
 version: '3'
+
+volumes:
+  db-data:
+
 services:
   db:
     image: 'postgres:latest'
     ports:
       - '5432:5432'
     env_file: db.env
-
-  backend:
-    image: 'openjdk:17'
-    depends_on:
-      - db
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - '8080:8080'
     volumes:
-      - ./backend:/app
-    env_file: db.env
+      - db-data:/var/lib/postgresql/data
 
   frontend:
     image: 'node:18'
@@ -26,5 +19,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - '3000:3000'
-    volumes:
-      - ./frontend:/app
+
+  backend:
+    image: 'eclipse-temurin:17'
+    depends_on:
+      - db
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'

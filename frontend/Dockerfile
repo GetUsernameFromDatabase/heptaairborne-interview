@@ -1,12 +1,10 @@
 FROM node:18
 
-# setup app files
 WORKDIR /app
-# uncomment next line if you don't want to use volumes from `../docker-compose.yml`
-# COPY . .
+COPY . .
 
-# pre-requisite commands
 RUN npm install
+RUN npm run build
+RUN npm install -g serve
 
-# run
-CMD ["npm", "run", "dev"]
+CMD ["serve", "-s", "dist", "-l", "3000"]

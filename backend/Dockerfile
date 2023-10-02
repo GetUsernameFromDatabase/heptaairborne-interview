@@ -1,6 +1,10 @@
-FROM openjdk:17
+FROM eclipse-temurin:17
 
 # setup app files
 WORKDIR /app
-# uncomment next line if you don't want to use volumes from `../docker-compose.yml`
-# COPY . .
+COPY . .
+
+# db will not be running during build phase, hence dev profile
+RUN ./mvnw package -P dev
+
+CMD ["java", "-jar", "backend.jar", "--spring.profiles.active=prod"]
