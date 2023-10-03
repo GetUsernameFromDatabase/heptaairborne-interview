@@ -81,7 +81,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 
 				<configuration>
-					<outputDirectory>${project.basedir}</outputDirectory>
+					<outputDirectory>${project.basedir}/target</outputDirectory>
 					<finalName>backend</finalName>
 					<excludes>
 						<exclude>

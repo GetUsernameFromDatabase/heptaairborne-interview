@@ -7,4 +7,4 @@ COPY . .
 # db will not be running during build phase, hence dev profile
 RUN ./mvnw package -P dev
 
-CMD ["java", "-jar", "backend.jar", "--spring.profiles.active=prod"]
+CMD ["java", "-jar", "./target/backend.jar", "--spring.profiles.active=prod"]

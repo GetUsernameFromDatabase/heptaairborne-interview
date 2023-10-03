@@ -21,8 +21,8 @@ services:
       - '3000:3000'
       - '24678:24678'
     environment:
-      - VITE_API_HOST=backend
-      - VITE_API_PORT=8080
+      - VITE_API_HOST=localhost # client perspective -- World Wide Web
+      - VITE_API_PORT=8000 # client perspective -- World Wide Web
 
   backend:
     image: 'eclipse-temurin:17'
@@ -33,3 +33,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - '8000:8080'
+    env_file: db.env
+    environment:
+      - DATABASE_HOST=db # inside docker
+      - DATABASE_PORT=5432 # inside docker

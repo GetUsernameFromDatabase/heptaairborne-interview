@@ -1,12 +1,13 @@
 """
-Python script to generate raw SQL changeset
+This script fetches images from <https://picsum.photos/v2/list> and generates 
+the liquibase file that can be used to insert them into the database.
 
 Python 3.11.5
 """
 import requests
 import json
 import time
-
+import argparse
 
 class ImageFetcher:
     def __init__(self, out_file="00001_insert_images.sql", max_images=15000):
@@ -77,10 +78,15 @@ class ImageFetcher:
 
 
 def main():
-    imageFetcher = ImageFetcher()
+    parser = argparse.ArgumentParser(description='Python script to generate raw SQL changeset')
+    parser.add_argument('--out_file', type=str, default="00001_insert_images.sql", help='Output file name')
+    parser.add_argument('--max_images', type=int, default=15000, help='Maximum number of images to fetch')
+
+    args = parser.parse_args()
+
+    imageFetcher = ImageFetcher(out_file=args.out_file, max_images=args.max_images)
     imageFetcher.ensure_max_images()
     imageFetcher.save_images_to_sql()
-
 
 if __name__ == "__main__":
     main()
