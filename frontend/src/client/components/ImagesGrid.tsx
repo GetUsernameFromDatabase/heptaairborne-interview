@@ -1,22 +1,17 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import axios from 'axios';
-import { ImageComponent } from './ImageComponent';
-import { Image } from 'types/image';
+import React, { useEffect, useState, useRef } from 'react';
+import { ImageComponent, ImageComponentMemo } from './ImageComponent';
 import { changePicsumUrlSize } from '../utilities/picsum';
+import { useImages } from '../hooks/useImages';
 
 const ImagesGrid: React.FC = () => {
-  const [images, setImages] = useState<Image[]>([]);
+  const { images, requestNewPage } = useImages(10);
   const loader = useRef<HTMLDivElement | null>(null);
   const scrollContainer = useRef<HTMLDivElement | null>(null);
-  const page = useRef(0);
 
-  const fetchImages = useCallback(async (page: number) => {
-    const response = await axios.get(`/api/images?page=${page}&size=10`);
-    setImages((prevImages) => [...prevImages, ...response.data.content]);
-  }, []);
-
+  // Infinite Scroller
   useEffect(() => {
-    const options = {
+    /*global IntersectionObserverInit, a*/
+    const options: IntersectionObserverInit = {
       root: scrollContainer.current,
       rootMargin: '20px',
       threshold: 1.0,
@@ -25,25 +20,19 @@ const ImagesGrid: React.FC = () => {
     const handleObserver = (entities: IntersectionObserverEntry[]) => {
       const target = entities[0];
       if (target.isIntersecting) {
-        fetchImages(page.current);
-        page.current += 1;
+        requestNewPage();
       }
     };
+
     const observer = new IntersectionObserver(handleObserver, options);
     if (loader.current) {
       observer.observe(loader.current);
     }
 
     return () => {
-      // cleanup on unmount
       observer.disconnect();
     };
-  }, [fetchImages]);
-
-  useEffect(() => {
-    fetchImages(page.current);
-    page.current += 1;
-  }, [fetchImages]);
+  }, [requestNewPage]);
 
   const widthPx = 150;
 
@@ -52,14 +41,13 @@ const ImagesGrid: React.FC = () => {
       ref={scrollContainer}
       style={{
         maxHeight: '100%',
-        overflowY: 'scroll',
         overflowX: 'hidden',
         display: 'grid',
         gridTemplateColumns: `repeat(auto-fill, minmax(${widthPx}px, 1fr))`,
       }}
     >
       {images.map((image) => (
-        <ImageComponent
+        <ImageComponentMemo
           key={image.id}
           image={{
             ...image,
