@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { ImageComponentMemo } from './ImageComponent';
+import { ImageComponentMemo } from './PicsumImageComponent';
 import { changePicsumUrlSize } from '../utilities/picsum';
 import { useImages } from '../hooks/useImages';
 
