@@ -1,32 +1,46 @@
-import axios from 'axios';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Image } from 'types/image';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ImageControllerApi } from '../../swagger/apis/image-controller-api';
+import type { ImageEntity } from 'src/swagger/models';
 
 export const useImages = (pageSize = 10) => {
-  const [images, setImages] = useState<Image[]>([]);
+  const [images, setImages] = useState<ImageEntity[]>([]);
   const pageQueue = useRef<number[]>([]);
   const currentPage = useRef(0);
-  const isFetching = useRef(false);
+  const noFetching = useRef(false);
+
+  const imageApi = useMemo(() => new ImageControllerApi(), []);
 
   const fetchImages = useCallback(async () => {
-    if (!isFetching.current && pageQueue.current.length > 0) {
-      isFetching.current = true;
-      const page = pageQueue.current.shift();
-      const response = await axios.get(
-        `/api/images?page=${page}&size=${pageSize}`
-      );
+    if (noFetching.current || pageQueue.current.length === 0) return;
 
-      setImages((prevImages) => [...prevImages, ...response.data.content]);
-      isFetching.current = false;
-      if (pageQueue.current.length > 0) {
-        fetchImages();
-      }
+    noFetching.current = true;
+    const page = pageQueue.current.shift()!; // should be fine due to length check
+    const response = await imageApi.getAllImages(page, pageSize);
+    if (response.data.last) {
+      // let noFetching.current = true;
+      // there is no need to fetch anymore since all has been fetched
+      return;
     }
-  }, [pageSize]);
+
+    if (!response.data.content) {
+      // try again later
+      // TODO: ensure it won't just start infinitely requesting the page
+      //  current case is fine for tech demo -- the problem shouldn't occur
+      pageQueue.current.push(page);
+      return;
+    }
+    // response.data.content! should be good due to the check before
+    setImages((prevImages) => [...prevImages, ...response.data.content!]);
+
+    noFetching.current = false;
+    if (pageQueue.current.length > 0) {
+      fetchImages();
+    }
+  }, [imageApi, pageSize]);
 
   const requestNewPage = useCallback(() => {
     pageQueue.current.push(currentPage.current++);
-    if (!isFetching.current) {
+    if (!noFetching.current) {
       fetchImages();
     }
   }, [fetchImages]);

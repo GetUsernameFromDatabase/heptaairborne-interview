@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from 'react';
-import { Image } from 'types/image';
+import type { ImageEntity } from 'src/swagger/models';
 import { changePicsumUrlSize, parsePicsumUrl } from '../utilities/picsum';
 import { LoadingImage } from './LoadingImage';
 
 export interface ImageComponentProps {
-  image: Image;
+  image: ImageEntity;
   className?: string;
 }
 
