@@ -27,28 +27,30 @@ export const ImageComponent: React.FC<ImageComponentProps> = React.memo(
 
     return (
       <div key={image.id} className={className}>
-        {isLoading && (
+        {isLoading ? (
           <div className="flex justify-center">
             <LoadingImage width={smallestSize} />
           </div>
-        )}
+        ) : null}
         <img
           src={image.imageUrl}
           alt={image.description}
           onClick={() => setShowOverlay(true)}
           onLoad={handleImageLoad}
-          className={`${isLoading ? 'hidden' : 'block'}`}
+          className={`transition-opacity duration-500 ease-in-out ${
+            isLoading ? 'opacity-0' : 'opacity-100'
+          }`}
         />
         {showOverlay && (
           <div
-            className="fixed inset-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50"
+            className="fixed inset-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-500 ease-in-out"
             onClick={() => setShowOverlay(false)}
           >
-            {isOverlayLoading && (
+            {isOverlayLoading ? (
               <div className="flex justify-center">
                 <LoadingImage />
               </div>
-            )}
+            ) : null}
             <img
               src={changePicsumUrlSize(
                 image.imageUrl,
@@ -57,7 +59,9 @@ export const ImageComponent: React.FC<ImageComponentProps> = React.memo(
               )}
               alt={image.description}
               onLoad={handleOverlayImageLoad}
-              className={`${isOverlayLoading ? 'hidden' : 'block'}`}
+              className={`transition-opacity duration-500 ease-in-out ${
+                isOverlayLoading ? 'opacity-0' : 'opacity-100'
+              }`}
             />
           </div>
         )}
