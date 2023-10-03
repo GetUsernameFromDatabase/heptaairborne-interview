@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Image } from 'types/image';
-import { changePicsumUrlSize } from '../utilities/picsum';
+import { changePicsumUrlSize, parsePicsumUrl } from '../utilities/picsum';
+import { LoadingImage } from './LoadingImage';
 
 export interface ImageComponentProps {
   image: Image;
@@ -11,32 +12,43 @@ export interface ImageComponentProps {
 export const ImageComponent: React.FC<ImageComponentProps> = React.memo(
   ({ image, className }) => {
     const [showOverlay, setShowOverlay] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isOverlayLoading, setIsOverlayLoading] = useState(true);
+
+    const { height, width } = parsePicsumUrl(image.imageUrl);
+    const smallestSize = Math.min(height, width);
+
+    const handleImageLoad = () => {
+      setIsLoading(false);
+    };
+    const handleOverlayImageLoad = () => {
+      setIsOverlayLoading(false);
+    };
 
     return (
       <div key={image.id} className={className}>
+        {isLoading && (
+          <div className="flex justify-center">
+            <LoadingImage width={smallestSize} />
+          </div>
+        )}
         <img
           src={image.imageUrl}
           alt={image.description}
-          width={image.width}
-          height={image.height}
           onClick={() => setShowOverlay(true)}
+          onLoad={handleImageLoad}
+          className={`${isLoading ? 'hidden' : 'block'}`}
         />
         {showOverlay && (
           <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(0,0,0,0.5)',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              zIndex: 1000,
-            }}
+            className="fixed inset-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50"
             onClick={() => setShowOverlay(false)}
           >
+            {isOverlayLoading && (
+              <div className="flex justify-center">
+                <LoadingImage />
+              </div>
+            )}
             <img
               src={changePicsumUrlSize(
                 image.imageUrl,
@@ -44,6 +56,8 @@ export const ImageComponent: React.FC<ImageComponentProps> = React.memo(
                 image.height
               )}
               alt={image.description}
+              onLoad={handleOverlayImageLoad}
+              className={`${isOverlayLoading ? 'hidden' : 'block'}`}
             />
           </div>
         )}

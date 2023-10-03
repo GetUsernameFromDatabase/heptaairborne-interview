@@ -1,4 +1,28 @@
 /**
+ * Parses id, width, height from picsum url
+ * @example
+ * input url = "https://picsum.photos/id/0/5000/3333"
+ * returns { id:0, width:5000, height:3333 }
+ */
+export function parsePicsumUrl(url: string) {
+  const urlParts = url.split('/');
+  const id = Number(urlParts[urlParts.length - 3]);
+  const width = Number(urlParts[urlParts.length - 2]);
+  const height = Number(urlParts[urlParts.length - 1]);
+  return { id, width, height };
+}
+
+/**
+ * Constructs picsum url
+ * @example
+ * input id=0, width=5000, height=3333
+ * returns "https://picsum.photos/id/0/5000/3333"
+ */
+export function constructPicsumUrl(id: number, width: number, height: number) {
+  return `https://picsum.photos/id/${id}/${width}/${height}`;
+}
+
+/**
  * Modifies the dimensions in a Picsum image URL.
  *
  * ID is taken from the URL
@@ -26,17 +50,11 @@ export function changePicsumUrlSize(
   desiredHeight: number | null = null
 ) {
   // extract the width and height
+  const { id, width, height } = parsePicsumUrl(url);
   let urlParts = url.split('/');
 
-  function reconstructUrl(width: number, height: number) {
-    return [
-      ...urlParts.slice(0, urlParts.length - 2),
-      width.toString(),
-      height.toString(),
-    ].join('/');
-  }
   if (desiredWidth && desiredHeight) {
-    return reconstructUrl(desiredWidth, desiredHeight);
+    return constructPicsumUrl(id, desiredWidth, desiredHeight);
   }
 
   let currentWidth = parseInt(urlParts[urlParts.length - 2]);
@@ -44,5 +62,5 @@ export function changePicsumUrlSize(
 
   let ratio = currentHeight / currentWidth;
   let calculatedHeight = Math.round(desiredWidth * ratio);
-  return reconstructUrl(desiredWidth, calculatedHeight);
+  return constructPicsumUrl(id, desiredWidth, calculatedHeight);
 }

@@ -16,13 +16,13 @@ const ImagesGrid: React.FC = () => {
     fetchImages();
   }, [fetchImages]);
 
-  const minWidthPx = 150;
+  const widthPx = 150;
 
   return (
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: `repeat(auto-fill, minmax(${minWidthPx}px, 1fr))`,
+        gridTemplateColumns: `repeat(auto-fill, minmax(${widthPx}px, 1fr))`,
       }}
     >
       {images.map((image) => (
@@ -30,7 +30,7 @@ const ImagesGrid: React.FC = () => {
           key={image.id}
           image={{
             ...image,
-            imageUrl: changePicsumUrlSize(image.imageUrl, minWidthPx),
+            imageUrl: changePicsumUrlSize(image.imageUrl, widthPx),
           }}
           className="m-2"
         />

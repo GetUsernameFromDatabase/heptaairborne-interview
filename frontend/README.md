@@ -1,4 +1,15 @@
-# Vite Typescript React 18 SSR
+# HeptaAirborne Technical Interview Frontend <!-- omit in toc -->
+
+## Asset sources
+
+Sources where I got my assets from:
+
+- Favicon generated with <https://favicon.io/>
+- Leaflet images taken from [node_modules/leaflet/dist/images](node_modules/leaflet/dist/images)
+  - Needed for production with SSR
+- Loading icon <https://icons8.com/preloaders/>
+
+## Vite Typescript React 18 SSR
 
 [![Node CI](https://github.com/jonluca/vite-typescript-ssr-react/actions/workflows/nodejs.yml/badge.svg)](https://github.com/jonluca/vite-typescript-ssr-react/actions/workflows/nodejs.yml)
 
@@ -13,14 +24,14 @@ A _blazingly_ modern web development stack. This template repo tries to achieve 
 - [Tailwind CSS](https://tailwindui.com/)
 - [Prettier](https://prettier.io/) & [ESLint](https://eslint.org/)
 
-## Development
+### Development
 
-```
+```bash
 yarn
 yarn dev:server
 ```
 
-That should start the server. It will open to http://localhost:7456.
+That should start the server. It will open to <http://localhost:7456>.
 
 If you'd like to just develop the UI, you can use
 
@@ -31,16 +42,16 @@ yarn dev:client
 
 To start the native vite client.
 
-## Building
+### Building
 
-```
+```bash
 yarn build
 yarn serve
 ```
 
 yarn build will create the assets in `dist` - a `client` and `server` folder. Serve will run `dist/server.js` with Node, but feel free to change this to use Docker or some other process manager to suit your deployment needs.
 
-## Files
+### Files
 
 `eslintrc.js` - a barebones eslint configuration for 2021, that extends off of the recommended ESLint config and prettier
 
@@ -58,6 +69,6 @@ yarn build will create the assets in `dist` - a `client` and `server` folder. Se
 
 `vite.config.ts` - Vite configuration
 
-## CI
+### CI
 
 We use GitHub actions to build the app. The badge is at the top of the repo. Currently it just confirms that everything builds properly.
