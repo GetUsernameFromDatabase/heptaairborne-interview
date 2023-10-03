@@ -16,8 +16,13 @@ export const useImages = (pageSize = 10) => {
 
   const fetchImages = useCallback(async () => {
     if (noFetching.current || pageQueue.current.length === 0) return;
-
     noFetching.current = true;
+
+    const readyForNext = () => {
+      noFetching.current = false;
+      fetchImages();
+    };
+
     const page = pageQueue.current.shift()!; // should be fine due to length check
     const response = await imageApi.getAllImages(page, pageSize);
     if (response.data.last) {
@@ -31,15 +36,11 @@ export const useImages = (pageSize = 10) => {
       // TODO: ensure it won't just start infinitely requesting the page
       //  current case is fine for tech demo -- the problem shouldn't occur
       pageQueue.current.push(page);
-      return;
+      return readyForNext();
     }
     // response.data.content! should be good due to the check before
     setImages((prevImages) => [...prevImages, ...response.data.content!]);
-
-    noFetching.current = false;
-    if (pageQueue.current.length > 0) {
-      fetchImages();
-    }
+    return readyForNext();
   }, [imageApi, pageSize]);
 
   const requestNewPage = useCallback(() => {
@@ -48,6 +49,9 @@ export const useImages = (pageSize = 10) => {
       fetchImages();
     }
   }, [fetchImages]);
+
+  // TODO: ability to change page size -- recalculate page when changed
+  //  not needed for demo
 
   useEffect(() => {
     requestNewPage();
