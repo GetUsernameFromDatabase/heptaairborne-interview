@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { ImageComponent } from './ImageComponent';
 import { Image } from 'types/image';
+import { changePicsumUrlSize } from '../utilities/picsum';
 
 const ImagesGrid: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -15,15 +16,24 @@ const ImagesGrid: React.FC = () => {
     fetchImages();
   }, [fetchImages]);
 
+  const minWidthPx = 150;
+
   return (
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+        gridTemplateColumns: `repeat(auto-fill, minmax(${minWidthPx}px, 1fr))`,
       }}
     >
       {images.map((image) => (
-        <ImageComponent key={image.id} image={image} className="m-2" />
+        <ImageComponent
+          key={image.id}
+          image={{
+            ...image,
+            imageUrl: changePicsumUrlSize(image.imageUrl, minWidthPx),
+          }}
+          className="m-2"
+        />
       ))}
     </div>
   );
