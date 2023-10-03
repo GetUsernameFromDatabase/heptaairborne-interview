@@ -21,8 +21,8 @@ services:
       - '3000:3000'
       - '24678:24678'
     environment:
-      - API_HOST=backend
-      - API_PORT=8080
+      - VITE_API_HOST=backend
+      - VITE_API_PORT=8080
 
   backend:
     image: 'eclipse-temurin:17'
