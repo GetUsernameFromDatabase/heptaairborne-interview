@@ -1,6 +1,10 @@
 import React, { Suspense } from 'react';
 import ImagesGrid from '../components/ImagesGrid';
-import { LeafletMapLazy, MarkerLazy } from '../components/LeafletMap.lazy';
+import {
+  LeafletMapLazy,
+  MarkerLazy,
+  PopupLazy,
+} from '../components/Leaflet.lazy';
 
 const MainPage: React.FC = () => {
   const center = { lat: 58.5953, lng: 25.0136 };
@@ -18,6 +22,7 @@ const MainPage: React.FC = () => {
           <LeafletMapLazy center={center} zoom={7}>
             <Suspense fallback={<></>}>
               <MarkerLazy position={center}>
+                <PopupLazy>Original map center</PopupLazy>
               </MarkerLazy>
             </Suspense>
           </LeafletMapLazy>
