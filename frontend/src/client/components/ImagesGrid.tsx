@@ -14,7 +14,7 @@ const ImagesGrid: React.FC = () => {
     const options: IntersectionObserverInit = {
       root: scrollContainer.current,
       rootMargin: '20px',
-      threshold: 1.0,
+      threshold: 0.5,
     };
 
     const handleObserver = (entities: IntersectionObserverEntry[]) => {

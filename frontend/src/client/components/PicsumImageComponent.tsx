@@ -37,7 +37,7 @@ export const PicsumImageComponent: React.FC<ImageComponentProps> = ({
         height={height}
         onClick={() => setShowOverlay(true)}
         onLoad={handleImageLoad}
-        className={`transition-opacity duration-500 ease-in-out ${
+        className={`transition-opacity duration-200 ease-in-out ${
           isLoading ? 'opacity-0' : 'opacity-100'
         }`}
       />
