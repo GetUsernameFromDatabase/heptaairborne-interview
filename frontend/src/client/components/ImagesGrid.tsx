@@ -52,6 +52,7 @@ const ImagesGrid: React.FC = () => {
       style={{
         maxHeight: '100%',
         overflowY: 'scroll',
+        overflowX: 'hidden',
         display: 'grid',
         gridTemplateColumns: `repeat(auto-fill, minmax(${widthPx}px, 1fr))`,
       }}

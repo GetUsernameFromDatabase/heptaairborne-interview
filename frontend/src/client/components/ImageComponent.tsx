@@ -35,7 +35,6 @@ export const ImageComponent: React.FC<ImageComponentProps> = React.memo(
         <img
           src={image.imageUrl}
           alt={image.description}
-          loading="lazy"
           onClick={() => setShowOverlay(true)}
           onLoad={handleImageLoad}
           className={`transition-opacity duration-500 ease-in-out ${
