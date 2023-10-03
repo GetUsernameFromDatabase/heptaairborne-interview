@@ -56,9 +56,9 @@ const ImagesGrid: React.FC = () => {
         gridTemplateColumns: `repeat(auto-fill, minmax(${widthPx}px, 1fr))`,
       }}
     >
-      {images.map((image) => (
+      {images.map((image, index) => (
         <ImageComponent
-          key={image.id}
+          key={index}
           image={{
             ...image,
             imageUrl: changePicsumUrlSize(image.imageUrl, widthPx),
