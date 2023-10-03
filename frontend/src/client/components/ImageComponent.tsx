@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Image } from 'types/image';
 import { changePicsumUrlSize, parsePicsumUrl } from '../utilities/picsum';
 import { LoadingImage } from './LoadingImage';
@@ -8,7 +8,6 @@ export interface ImageComponentProps {
   className?: string;
 }
 
-// React.memo To prevent re-rendering
 export const ImageComponent: React.FC<ImageComponentProps> = React.memo(
   ({ image, className }) => {
     const [showOverlay, setShowOverlay] = useState(false);
@@ -18,20 +17,21 @@ export const ImageComponent: React.FC<ImageComponentProps> = React.memo(
     const { height, width } = parsePicsumUrl(image.imageUrl);
     const smallestSize = Math.min(height, width);
 
-    const handleImageLoad = () => {
+    const handleImageLoad = useCallback(() => {
       setIsLoading(false);
-    };
-    const handleOverlayImageLoad = () => {
+    }, []);
+
+    const handleOverlayImageLoad = useCallback(() => {
       setIsOverlayLoading(false);
-    };
+    }, []);
 
     return (
       <div key={image.id} className={className}>
-        {isLoading ? (
+        {isLoading && (
           <div className="flex justify-center">
             <LoadingImage width={smallestSize} />
           </div>
-        ) : null}
+        )}
         <img
           src={image.imageUrl}
           alt={image.description}
@@ -46,11 +46,11 @@ export const ImageComponent: React.FC<ImageComponentProps> = React.memo(
             className="fixed inset-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-500 ease-in-out"
             onClick={() => setShowOverlay(false)}
           >
-            {isOverlayLoading ? (
+            {isOverlayLoading && (
               <div className="flex justify-center">
                 <LoadingImage />
               </div>
-            ) : null}
+            )}
             <img
               src={changePicsumUrlSize(
                 image.imageUrl,
