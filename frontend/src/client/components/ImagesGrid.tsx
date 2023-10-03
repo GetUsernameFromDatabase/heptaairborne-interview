@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { ImageComponent } from './ImageComponent';
 import { Image } from 'types/image';
@@ -6,21 +6,14 @@ import { changePicsumUrlSize } from '../utilities/picsum';
 
 const ImagesGrid: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
-  const [page, setPage] = useState(0);
   const loader = useRef<HTMLDivElement | null>(null);
   const scrollContainer = useRef<HTMLDivElement | null>(null);
+  const page = useRef(0);
 
-  const fetchImages = useCallback(async () => {
+  const fetchImages = useCallback(async (page: number) => {
     const response = await axios.get(`/api/images?page=${page}&size=10`);
     setImages((prevImages) => [...prevImages, ...response.data.content]);
-  }, [page]);
-
-  const handleObserver = (entities: IntersectionObserverEntry[]) => {
-    const target = entities[0];
-    if (target.isIntersecting) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  };
+  }, []);
 
   useEffect(() => {
     const options = {
@@ -29,6 +22,13 @@ const ImagesGrid: React.FC = () => {
       threshold: 1.0,
     };
 
+    const handleObserver = (entities: IntersectionObserverEntry[]) => {
+      const target = entities[0];
+      if (target.isIntersecting) {
+        fetchImages(page.current);
+        page.current += 1;
+      }
+    };
     const observer = new IntersectionObserver(handleObserver, options);
     if (loader.current) {
       observer.observe(loader.current);
@@ -38,11 +38,12 @@ const ImagesGrid: React.FC = () => {
       // cleanup on unmount
       observer.disconnect();
     };
-  }, []);
+  }, [fetchImages]);
 
   useEffect(() => {
-    fetchImages();
-  }, [fetchImages, page]);
+    fetchImages(page.current);
+    page.current += 1;
+  }, [fetchImages]);
 
   const widthPx = 150;
 
@@ -57,9 +58,9 @@ const ImagesGrid: React.FC = () => {
         gridTemplateColumns: `repeat(auto-fill, minmax(${widthPx}px, 1fr))`,
       }}
     >
-      {images.map((image, index) => (
+      {images.map((image) => (
         <ImageComponent
-          key={index}
+          key={image.id}
           image={{
             ...image,
             imageUrl: changePicsumUrlSize(image.imageUrl, widthPx),
