@@ -1,7 +1,7 @@
-import React, { Suspense, lazy } from 'react';
+import { lazy } from 'react';
 
-export const LazyLeafletMap = lazy(() => import('./LeafletMap'));
-export const LazyMarker = lazy(async () => {
+export const LeafletMapLazy = lazy(() => import('./LeafletMap'));
+export const MarkerLazy = lazy(async () => {
   const module = await import('react-leaflet');
   return { default: module.Marker };
 });
