@@ -26,8 +26,8 @@ export const useImages = (pageSize = 10) => {
     const page = pageQueue.current.shift()!; // should be fine due to length check
     const response = await imageApi.getAllImages(page, pageSize);
     if (response.data.last) {
-      // let noFetching.current = true;
       // there is no need to fetch anymore since all has been fetched
+      // let noFetching.current = true;
       return;
     }
 
