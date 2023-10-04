@@ -26,12 +26,14 @@ Just a simple webpage with two columns:
 
 Server Side Rendering is supported.
 
-### Loading new images
+### Image column
 
 Images can be loaded by:
 
 - scrolling down (infinite scrolling)
 - _there was plan to add purely paginated loading as well with switching page size and the user could toggle between infinite scrolling and that -- discarded_
+
+The maximum sized image can be viewed by clicking on the image in the left column.
 
 ### Swagger
 
