@@ -31,6 +31,7 @@ Server Side Rendering is supported.
 Images can be loaded by:
 
 - scrolling down (infinite scrolling)
+- _there was plan to add purely paginated loading as well with switching page size and the user could toggle between infinite scrolling and that -- discarded_
 
 ### Swagger
 
