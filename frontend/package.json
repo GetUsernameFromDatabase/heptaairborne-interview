@@ -18,7 +18,7 @@
     "test:watch": "vitest --watch",
     "coverage": "vitest --coverage",
     "typecheck": "tsc --noEmit",
-    "serve": "yarn build && cross-env NODE_ENV=production yarn ts-node ./server",
+    "serve": "yarn build && cross-env NODE_ENV=production yarn ts-node server.ts",
     "serve:local": "vite serve",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles index.html dist & copyfiles static/** dist/assets && copyfiles -f dist/client/assets/** dist/assets",
