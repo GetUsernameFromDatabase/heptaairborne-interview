@@ -14,9 +14,6 @@
     "build": "rimraf dist && tsc -p tsconfig.prod.json && yarn build:client && yarn build:server && yarn copy-files",
     "build:client": "vite build --outDir dist/client --ssrManifest",
     "build:server": "vite build --ssr src/client/entry-server.tsx --outDir dist/server",
-    "test": "vitest",
-    "test:watch": "vitest --watch",
-    "coverage": "vitest --coverage",
     "typecheck": "tsc --noEmit",
     "serve": "yarn build && cross-env NODE_ENV=production yarn ts-node server.ts",
     "serve:local": "vite serve",
@@ -72,6 +69,7 @@
     "tailwindcss": "3.3.1",
     "typescript": "5.0.4",
     "vite": "4.3.0",
+    "vite-plugin-compression2": "^0.10.5",
     "vitest": "^0.30.1"
   }
 }

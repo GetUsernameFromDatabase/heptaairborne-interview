@@ -5,6 +5,7 @@ import express from 'express';
 import compression from 'compression';
 import serveStatic from 'serve-static';
 import { createServer as createViteServer } from 'vite';
+
 const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD;
 
 const resolve = (p: string) => path.resolve(__dirname, p);
