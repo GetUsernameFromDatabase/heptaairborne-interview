@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { PicsumImageComponentMemo } from './PicsumImageComponent';
 import { changePicsumUrlSize } from '../utilities/picsum';
 import { useImages } from '../hooks/useImages';
@@ -11,9 +11,7 @@ import { useInfiniteScrollerObserver } from '../hooks/useObserver';
 const ImagesGrid: React.FC = () => {
   const { images, requestNewPage, totalImages } = useImages(10);
   const [selectedImage, setSelectedImage] = useState<ImageEntity | null>(null);
-
   const loader = useRef<HTMLDivElement | null>(null);
-  const scrollContainer = useRef<HTMLDivElement | null>(null);
 
   const widthPx = 300;
   const breakpointColumnsObj = {
@@ -22,23 +20,11 @@ const ImagesGrid: React.FC = () => {
     500: 1,
   };
 
+  useInfiniteScrollerObserver({ loader, onIntersect: requestNewPage });
+
   const handleImageClick = (image: ImageEntity) => {
     setSelectedImage(image);
   };
-
-  useInfiniteScrollerObserver(scrollContainer, loader, requestNewPage);
-
-  // In production useImage's useEffect is not called
-  //  so while in dev mode infinite scroll works right out of the bat
-  //  in production it doesn't
-  useEffect(() => {
-    const container = scrollContainer.current;
-    if (container) {
-      if (container.scrollHeight <= container.clientHeight) {
-        requestNewPage();
-      }
-    }
-  }, [images.length, requestNewPage]);
 
   return (
     <div className="h-full w-full flex flex-col">
@@ -64,7 +50,7 @@ const ImagesGrid: React.FC = () => {
         />
       )}
 
-      <div ref={scrollContainer} className="h-full overflow-x-hidden">
+      <div className="h-full overflow-x-hidden">
         <Masonry
           breakpointCols={breakpointColumnsObj}
           className="my-masonry-grid"
@@ -85,8 +71,11 @@ const ImagesGrid: React.FC = () => {
               />
             </div>
           ))}
+          <div
+            ref={loader}
+            className="InfiniteScrollerObserverLoader h-32"
+          ></div>
         </Masonry>
-        <div id="loader" ref={loader}></div>
       </div>
     </div>
   );

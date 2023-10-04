@@ -95,7 +95,7 @@ async function createServer(isProd = process.env.NODE_ENV === 'production') {
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
     } catch (e: any) {
       !isProd && vite.ssrFixStacktrace(e);
-      console.log(e.stack);
+      console.error(e.stack);
       // If an error is caught, let Vite fix the stack trace so it maps back to
       // your actual source code.
       vite.ssrFixStacktrace(e);
