@@ -9,7 +9,6 @@ export const useInfiniteScrollerObserver = (
     const currentLoader = loader.current;
 
     const handleObserver = (entities: IntersectionObserverEntry[]) => {
-      console.log(entities);
       const target = entities[0];
       if (target.isIntersecting) {
         shouldLoadMore();
