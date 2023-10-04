@@ -6,6 +6,7 @@ import Masonry from 'react-masonry-css';
 import { ImageOverlayComponent } from './ImageOverlayComponent';
 import type { ImageEntity } from 'src/swagger/models';
 import ProgressBar from './ProgressBar';
+import { useInfiniteScrollerObserver } from '../hooks/useObserver';
 
 const ImagesGrid: React.FC = () => {
   const { images, requestNewPage, totalImages } = useImages(10);
@@ -25,34 +26,7 @@ const ImagesGrid: React.FC = () => {
     setSelectedImage(image);
   };
 
-  // Infinite Scroller
-  useEffect(() => {
-    /*global IntersectionObserverInit, a*/
-    const options: IntersectionObserverInit = {
-      root: scrollContainer.current,
-      rootMargin: '200px',
-      threshold: 0.1,
-    };
-
-    const handleObserver = (entities: IntersectionObserverEntry[]) => {
-      const target = entities[0];
-      if (target.isIntersecting) {
-        requestNewPage();
-      }
-    };
-
-    const observer = new IntersectionObserver(handleObserver, options);
-
-    if (loader.current) {
-      observer.observe(loader.current);
-    }
-
-    return () => {
-      if (loader.current) {
-        observer.unobserve(loader.current);
-      }
-    };
-  }, [requestNewPage]);
+  useInfiniteScrollerObserver(scrollContainer, loader, requestNewPage);
 
   return (
     <div className="h-full w-full flex flex-col">
@@ -88,7 +62,7 @@ const ImagesGrid: React.FC = () => {
             </div>
           ))}
         </Masonry>
-        <div id="loader" ref={loader} className="h-4"></div>
+        <div id="loader" ref={loader} className="flex h-4"></div>
       </div>
     </div>
   );

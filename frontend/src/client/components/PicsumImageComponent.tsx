@@ -1,30 +1,21 @@
-import React, { useState, useCallback } from 'react';
-import { LoadingImage } from './LoadingImage';
+import React from 'react';
 import type { ImageEntity } from 'src/swagger/models';
 import { parsePicsumUrl } from '../utilities/picsum';
 
 export interface ImageComponentProps {
   image: ImageEntity;
   className?: string;
-  onClick?: () => void; // Make onClick optional by adding "?"
+  onClick?: () => void;
 }
 
 export const PicsumImageComponent: React.FC<ImageComponentProps> = ({
   image,
   className,
-  onClick, // Destructure the onClick prop
+  onClick,
 }) => {
-  const [isLoading, setIsLoading] = useState(true);
-
   const { height, width } = parsePicsumUrl(image.imageUrl);
-  const smallestSize = Math.min(height, width);
-
-  const handleImageLoad = useCallback(() => {
-    setIsLoading(false);
-  }, []);
 
   const handleClick = () => {
-    // Call the onClick prop if it's provided
     if (onClick) {
       onClick();
     }
@@ -32,21 +23,13 @@ export const PicsumImageComponent: React.FC<ImageComponentProps> = ({
 
   return (
     <div key={image.id} className={className}>
-      {isLoading && (
-        <div className="flex justify-center items-center">
-          <LoadingImage width={smallestSize} />
-        </div>
-      )}
       <img
         src={image.imageUrl}
         alt={image.description}
-        width={width}
         height={height}
-        onLoad={handleImageLoad}
-        className={`transition-opacity duration-200 ease-in-out ${
-          isLoading ? 'opacity-0' : 'opacity-100'
-        }`}
-        onClick={handleClick} // Call handleClick when the image is clicked
+        width={width}
+        className={`transition-opacity duration-200 ease-in-out bg-gray-500`}
+        onClick={handleClick}
       />
     </div>
   );
