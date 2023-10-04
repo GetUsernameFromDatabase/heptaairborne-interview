@@ -1,19 +1,19 @@
 import React, { useState, useCallback } from 'react';
-import type { ImageEntity } from 'src/swagger/models';
-import { changePicsumUrlSize, parsePicsumUrl } from '../utilities/picsum';
 import { LoadingImage } from './LoadingImage';
-import { ImageOverlayComponent } from './ImageOverlayComponent';
+import type { ImageEntity } from 'src/swagger/models';
+import { parsePicsumUrl } from '../utilities/picsum';
 
 export interface ImageComponentProps {
   image: ImageEntity;
   className?: string;
+  onClick?: () => void; // Make onClick optional by adding "?"
 }
 
 export const PicsumImageComponent: React.FC<ImageComponentProps> = ({
   image,
   className,
+  onClick, // Destructure the onClick prop
 }) => {
-  const [showOverlay, setShowOverlay] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const { height, width } = parsePicsumUrl(image.imageUrl);
@@ -23,10 +23,17 @@ export const PicsumImageComponent: React.FC<ImageComponentProps> = ({
     setIsLoading(false);
   }, []);
 
+  const handleClick = () => {
+    // Call the onClick prop if it's provided
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
     <div key={image.id} className={className}>
       {isLoading && (
-        <div className="flex justify-center">
+        <div className="flex justify-center items-center">
           <LoadingImage width={smallestSize} />
         </div>
       )}
@@ -35,23 +42,11 @@ export const PicsumImageComponent: React.FC<ImageComponentProps> = ({
         alt={image.description}
         width={width}
         height={height}
-        onClick={() => setShowOverlay(true)}
         onLoad={handleImageLoad}
         className={`transition-opacity duration-200 ease-in-out ${
           isLoading ? 'opacity-0' : 'opacity-100'
         }`}
-      />
-      <ImageOverlayComponent
-        image={{
-          ...image,
-          imageUrl: changePicsumUrlSize(
-            image.imageUrl,
-            image.width,
-            image.height
-          ),
-        }}
-        show={showOverlay}
-        onClose={() => setShowOverlay(false)}
+        onClick={handleClick} // Call handleClick when the image is clicked
       />
     </div>
   );
@@ -59,4 +54,4 @@ export const PicsumImageComponent: React.FC<ImageComponentProps> = ({
 
 PicsumImageComponent.displayName = 'ImageComponent';
 
-export const ImageComponentMemo = React.memo(PicsumImageComponent);
+export const PicsumImageComponentMemo = React.memo(PicsumImageComponent);

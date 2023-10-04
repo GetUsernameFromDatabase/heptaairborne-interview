@@ -25,11 +25,11 @@ export const ImageOverlayComponent: React.FC<ImageOverlayComponentProps> = ({
 
   return (
     <div
-      className="fixed inset-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-500 ease-in-out"
+      className="fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-500 ease-in-out"
       onClick={onClose}
     >
       {isOverlayLoading && (
-        <div className="flex justify-center">
+        <div className="flex justify-center absolute">
           <LoadingImage />
         </div>
       )}
@@ -37,9 +37,7 @@ export const ImageOverlayComponent: React.FC<ImageOverlayComponentProps> = ({
         src={image.imageUrl}
         alt={image.description}
         onLoad={handleOverlayImageLoad}
-        className={`transition-opacity duration-500 ease-in-out ${
-          isOverlayLoading ? 'opacity-0' : 'opacity-100'
-        }`}
+        className={`transition-opacity duration-500 ease-in-out max-h-screen opacity-100`}
       />
     </div>
   );
