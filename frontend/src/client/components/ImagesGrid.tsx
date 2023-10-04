@@ -28,9 +28,21 @@ const ImagesGrid: React.FC = () => {
 
   useInfiniteScrollerObserver(scrollContainer, loader, requestNewPage);
 
+  // In production useImage's useEffect is not called
+  //  so while in dev mode infinite scroll works right out of the bat
+  //  in production it doesn't
+  useEffect(() => {
+    const container = scrollContainer.current;
+    if (container) {
+      if (container.scrollHeight <= container.clientHeight) {
+        requestNewPage();
+      }
+    }
+  }, [images.length, requestNewPage]);
+
   return (
     <div className="h-full w-full flex flex-col">
-      <div className="flex justify-between items-center space-x-2">
+      <div className="flex justify-between items-center space-x-2 m-2">
         <ProgressBar current={images.length} total={totalImages}></ProgressBar>
 
         <div className="flex">
@@ -74,7 +86,7 @@ const ImagesGrid: React.FC = () => {
             </div>
           ))}
         </Masonry>
-        <div id="loader" ref={loader} className="flex h-4"></div>
+        <div id="loader" ref={loader}></div>
       </div>
     </div>
   );

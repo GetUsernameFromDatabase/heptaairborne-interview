@@ -14,10 +14,10 @@ export const useInfiniteScrollerObserver = (
         shouldLoadMore();
       }
     };
-
     const observer = new IntersectionObserver(handleObserver, {
       root: scrollContainer.current,
       threshold: 0,
+      rootMargin: '50px',
     });
 
     if (currentLoader) {
