@@ -3,24 +3,34 @@ import { PicsumImageComponentMemo } from './PicsumImageComponent';
 import { changePicsumUrlSize } from '../utilities/picsum';
 import { useImages } from '../hooks/useImages';
 import Masonry from 'react-masonry-css';
-import { ImageOverlayComponent } from './ImageOverlayComponent'; // Import the ImageOverlayComponent
+import { ImageOverlayComponent } from './ImageOverlayComponent';
 import type { ImageEntity } from 'src/swagger/models';
+import ProgressBar from './ProgressBar';
 
 const ImagesGrid: React.FC = () => {
-  const { images, requestNewPage } = useImages(10);
-  const [selectedImage, setSelectedImage] = useState<ImageEntity | null>(null); // State to store clicked image
+  const { images, requestNewPage, totalImages } = useImages(10);
+  const [selectedImage, setSelectedImage] = useState<ImageEntity | null>(null);
 
   const loader = useRef<HTMLDivElement | null>(null);
   const scrollContainer = useRef<HTMLDivElement | null>(null);
 
   const widthPx = 300;
+  const breakpointColumnsObj = {
+    default: 3,
+    800: 2,
+    500: 1,
+  };
+
+  const handleImageClick = (image: ImageEntity) => {
+    setSelectedImage(image);
+  };
 
   // Infinite Scroller
   useEffect(() => {
     /*global IntersectionObserverInit, a*/
     const options: IntersectionObserverInit = {
       root: scrollContainer.current,
-      rootMargin: '500px',
+      rootMargin: '200px',
       threshold: 0.1,
     };
 
@@ -32,57 +42,54 @@ const ImagesGrid: React.FC = () => {
     };
 
     const observer = new IntersectionObserver(handleObserver, options);
+
     if (loader.current) {
       observer.observe(loader.current);
     }
 
     return () => {
-      observer.disconnect();
+      if (loader.current) {
+        observer.unobserve(loader.current);
+      }
     };
   }, [requestNewPage]);
 
-  const breakpointColumnsObj = {
-    default: 3, // Adjust the number of columns to your preference
-    800: 2,
-    500: 1,
-  };
-
-  // Function to handle image click
-  const handleImageClick = (image: ImageEntity) => {
-    setSelectedImage(image); // Store clicked image information
-  };
-
   return (
-    <div ref={scrollContainer} className="h-full overflow-x-hidden p-4">
+    <div className="h-full w-full flex flex-col">
+      <ProgressBar current={images.length} total={totalImages}></ProgressBar>
+
       {selectedImage && (
         <ImageOverlayComponent
           image={selectedImage}
-          show={true} // Show the overlay
-          onClose={() => setSelectedImage(null)} // Close the overlay when the image is clicked
+          show={Boolean(selectedImage)}
+          onClose={() => setSelectedImage(null)}
         />
       )}
-      <Masonry
-        breakpointCols={breakpointColumnsObj}
-        className="my-masonry-grid"
-        columnClassName="my-masonry-grid_column"
-      >
-        {images.map((image) => (
-          <div
-            key={image.id}
-            className="m-2 rounded-lg overflow-hidden shadow-md transform hover:scale-105 transition-transform duration-300"
-            onClick={() => handleImageClick(image)} // Handle image click
-          >
-            <PicsumImageComponentMemo
-              image={{
-                ...image,
-                imageUrl: changePicsumUrlSize(image.imageUrl, widthPx),
-              }}
-              className="w-full h-auto"
-            />
-          </div>
-        ))}
-      </Masonry>
-      <div ref={loader}></div>
+
+      <div ref={scrollContainer} className="h-full overflow-x-hidden">
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
+          {images.map((image) => (
+            <div
+              key={image.id}
+              className="m-2 rounded-lg overflow-hidden shadow-md transform hover:scale-105 transition-transform duration-300"
+              onClick={() => handleImageClick(image)}
+            >
+              <PicsumImageComponentMemo
+                image={{
+                  ...image,
+                  imageUrl: changePicsumUrlSize(image.imageUrl, widthPx),
+                }}
+                className="w-full h-auto"
+              />
+            </div>
+          ))}
+        </Masonry>
+        <div id="loader" ref={loader} className="h-4"></div>
+      </div>
     </div>
   );
 };
