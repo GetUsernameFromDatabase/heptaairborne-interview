@@ -47,3 +47,5 @@ For running locally see the respective README files under [backend](./backend/) 
 
 Backend development profile uses [h2](http://h2database.com/html/main.html) database
 so postgres installation is not needed.
+
+> Docker files can be used as a guide on what needs to be done
