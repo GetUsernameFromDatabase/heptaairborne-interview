@@ -2,6 +2,9 @@ import { MapOptions, Marker, icon } from 'leaflet';
 import React, { FC, ReactNode } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 
+// [vite] Error when evaluating SSR module /src/client/components/LeafletMap.tsx: failed to import "leaflet"
+//  is expected -- https://jan-mueller.at/blog/react-leaflet/#supporting-ssr
+
 Marker.prototype.options.icon = icon({
   iconUrl: '/static/leaflet/marker-icon.png',
   iconRetinaUrl: '/static/leaflet/marker-icon.png',
