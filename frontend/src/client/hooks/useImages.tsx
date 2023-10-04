@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ImageControllerApi } from '../../swagger/apis/image-controller-api';
 import type { ImageEntity } from 'src/swagger/models';
-import { returnBackendBasePath } from '../utilities/environment';
 
 export const useImages = (pageSize = 10) => {
   const [images, setImages] = useState<ImageEntity[]>([]);
@@ -10,10 +9,7 @@ export const useImages = (pageSize = 10) => {
   const noFetching = useRef(false);
   const [totalImages, setTotalImages] = useState(0);
 
-  const imageApi = useMemo(
-    () => new ImageControllerApi({ basePath: returnBackendBasePath() }),
-    []
-  );
+  const imageApi = useMemo(() => new ImageControllerApi(), []);
 
   const fetchImages = useCallback(async () => {
     if (noFetching.current || pageQueue.current.length === 0) return;
