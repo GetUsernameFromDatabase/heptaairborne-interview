@@ -30,7 +30,19 @@ const ImagesGrid: React.FC = () => {
 
   return (
     <div className="h-full w-full flex flex-col">
-      <ProgressBar current={images.length} total={totalImages}></ProgressBar>
+      <div className="flex justify-between items-center space-x-2">
+        <ProgressBar current={images.length} total={totalImages}></ProgressBar>
+
+        <div className="flex">
+          <button
+            type="button"
+            className="bg-blue-500 text-white w-24 h-6 rounded"
+            onClick={requestNewPage}
+          >
+            Load More
+          </button>
+        </div>
+      </div>
 
       {selectedImage && (
         <ImageOverlayComponent
