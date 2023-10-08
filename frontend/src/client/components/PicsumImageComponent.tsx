@@ -10,7 +10,7 @@ export interface ImageComponentProps {
 
 export const PicsumImageComponent: React.FC<ImageComponentProps> = ({
   image,
-  className,
+  className = '',
   onClick,
 }) => {
   const { height, width } = parsePicsumUrl(image.imageUrl);
@@ -22,16 +22,15 @@ export const PicsumImageComponent: React.FC<ImageComponentProps> = ({
   };
 
   return (
-    <div key={image.id} className={className}>
-      <img
-        src={image.imageUrl}
-        alt={image.description}
-        height={height}
-        width={width}
-        className={`transition-opacity duration-200 ease-in-out bg-gray-500`}
-        onClick={handleClick}
-      />
-    </div>
+    <img
+      key={image.id}
+      src={image.imageUrl}
+      alt={image.description}
+      height={height}
+      width={width}
+      className={className}
+      onClick={handleClick}
+    />
   );
 };
 

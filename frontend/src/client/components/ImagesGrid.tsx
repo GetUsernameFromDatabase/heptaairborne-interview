@@ -59,7 +59,7 @@ const ImagesGrid: React.FC = () => {
           {images.map((image) => (
             <div
               key={image.id}
-              className="m-2 rounded-lg overflow-hidden shadow-md transform hover:scale-105 transition-transform duration-300"
+              className="w-fit m-2 rounded-lg overflow-hidden shadow-md transform hover:scale-105 transition-transform duration-300"
               onClick={() => handleImageClick(image)}
             >
               <PicsumImageComponentMemo
@@ -67,7 +67,6 @@ const ImagesGrid: React.FC = () => {
                   ...image,
                   imageUrl: changePicsumUrlSize(image.imageUrl, widthPx),
                 }}
-                className="w-full h-auto"
               />
             </div>
           ))}
