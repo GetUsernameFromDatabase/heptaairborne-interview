@@ -13,19 +13,19 @@ import lombok.Setter;
 @IdClass(LocationImageId.class)
 public class LocationImageEntity {
 
-  @Id
-  @Column(name = "location_id", nullable = false)
-  private Long locationId;
+    @Id
+    @Column(name = "location_id", nullable = false)
+    private Long locationId;
 
-  @Id
-  @Column(name = "image_id", nullable = false)
-  private Long imageId;
+    @Id
+    @Column(name = "image_id", nullable = false)
+    private Long imageId;
 
-  @ManyToOne
-  @JoinColumn(name = "location_id", insertable = false, updatable = false)
-  private LocationEntity locationEntity;
+    @ManyToOne
+    @JoinColumn(name = "location_id", insertable = false, updatable = false)
+    private LocationEntity locationEntity;
 
-  @ManyToOne
-  @JoinColumn(name = "image_id", insertable = false, updatable = false)
-  private ImageEntity imageEntity;
+    @ManyToOne
+    @JoinColumn(name = "image_id", insertable = false, updatable = false)
+    private ImageEntity imageEntity;
 }

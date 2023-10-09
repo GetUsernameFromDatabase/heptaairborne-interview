@@ -14,16 +14,16 @@ import java.math.BigDecimal;
 @Table(name = "locations")
 public class LocationEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(name = "latitude", nullable = false)
-  private BigDecimal latitude;
+    @Column(name = "latitude", nullable = false)
+    private BigDecimal latitude;
 
-  @Column(name = "longitude", nullable = false)
-  private BigDecimal longitude;
+    @Column(name = "longitude", nullable = false)
+    private BigDecimal longitude;
 
-  @Column(name = "name", nullable = false)
-  private String name;
+    @Column(name = "name", nullable = false)
+    private String name;
 }
