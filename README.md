@@ -5,6 +5,11 @@
   - [Frontend](#frontend)
 - [Setup](#setup)
 
+This is a simple project to satisfy Hepta Airborne's technical interview.
+
+Received the job offer, but the compensation didn't align with the responsibilities.\
+I also, at the time, did not feel confident enough managing AWS by myself.
+
 ## Introduction
 
 Main objectives are:
