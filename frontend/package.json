@@ -1,13 +1,6 @@
 {
-  "name": "vite-typescript-ssr-react",
-  "version": "1.0.1",
-  "description": "Boilerplate for a modern web stack",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jonluca/vite-typescript-ssr-react"
-  },
-  "author": "JonLuca DeCaro",
-  "license": "MIT",
+  "name": "frontend",
+  "author": "Ryan Murulo",
   "scripts": {
     "dev:server": "nodemon --watch server.ts --watch src/server --exec 'ts-node server.ts'",
     "dev:client": "yarn build:client && vite --config vite.config.ts dev",
